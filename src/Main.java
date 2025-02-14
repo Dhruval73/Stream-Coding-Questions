@@ -14,6 +14,16 @@ public class Main {
         skipMethod();
         limitMethod();
 
+        //Popular Terminal ops(11)
+        forEachMethod();
+        collectMethod();
+        reduceMethod();
+        allMatchMethod();
+        findAnyMethod(); // not intuitive
+        maxMethod(); //comparator needed
+        toArrayMethod(); //String[]::new
+
+        //Collectors methods
 
     }
 
@@ -87,7 +97,7 @@ public class Main {
     }
 
     //skip
-    public static void skipMethod(){
+    private static void skipMethod(){
 
         List<Integer> list = List.of(1,2,3,4,5,6,7,8,9);
 
@@ -96,12 +106,74 @@ public class Main {
     }
 
     //limit
-    public static void limitMethod(){
+    private static void limitMethod(){
 
         List<Integer> list = List.of(1,2,3,4,5,6,7,8,9);
 
         list.stream().limit(4).forEach(System.out::println);
     }
 
+    //Terminal ops
+    //forEach
+    private static void forEachMethod(){
 
+        List<String> list = Arrays.asList("apple", "banana", "orange", "mango");
+
+        list.stream().forEach(word -> System.out.println("Fruit: " + word));
+    }
+
+    //collect
+    private static void collectMethod(){
+
+        List<Integer> list = List.of(1,2,3,2,4,3,4,2,5,4,3,5,5,6);
+
+        Set<Integer> set = list.stream().collect(Collectors.toSet());
+        System.out.println(set);
+    }
+
+    //reduce > it performs a binary operation > takes 2 args and produce a single result > returns an optional
+    private static void reduceMethod(){
+
+        List<Integer> list = List.of(1,2,3,4,5,6);
+
+        Optional<Integer> factorial = list.stream().reduce((a, b) -> a*b);
+
+        System.out.println(factorial.get());
+    }
+
+    //allMatch, anyMatch and noneMatch > all are short-circuiting meaning they will stop once the condition is fulfilled in case a predicate is fulfilled.
+    // allMatch > all elements match the given predicate, and so on
+    private static void allMatchMethod(){
+
+        List<Integer> list = List.of(2,4,6,4,8,6);
+
+        boolean even = list.stream().allMatch(a -> a%2== 0);
+        System.out.println(even);
+    }
+
+    //findFirst, findAny > short-circuiting > it doesnt take a predicate as one might think, but it is used in combination with filter and return any element or first element
+    private static void findAnyMethod(){
+
+        List<String> list = Arrays.asList("apple", "banana", "bean", "bulbasaur");
+
+        Optional<String> bWord = list.stream().parallel().filter(word -> word.startsWith("b")).findAny();
+        System.out.println(bWord);
+    }
+
+    //min and max > passing comparator is compulsary
+    private static void maxMethod(){
+        List<Integer> list = List.of(2,4,6,4,8,6);
+
+        Optional<Integer> maxInt = list.stream().max(Integer::compareTo);
+        System.out.println(maxInt);
+
+    }
+
+    //toArray
+    private static void toArrayMethod(){
+        List<String> words = Arrays.asList("apple", "banana", "orange", "mango");
+
+        String[] arrWord = words.stream().toArray(String[]::new);
+        System.out.println(Arrays.toString(arrWord));
+    }
 }
