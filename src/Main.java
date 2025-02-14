@@ -23,7 +23,10 @@ public class Main {
         maxMethod(); //comparator needed
         toArrayMethod(); //String[]::new
 
-        //Collectors methods
+        //Basic Collectors methods(2)
+        joiningMethod();
+        groupingByMethod();
+        groupingByMethod2();
 
     }
 
@@ -175,5 +178,41 @@ public class Main {
 
         String[] arrWord = words.stream().toArray(String[]::new);
         System.out.println(Arrays.toString(arrWord));
+    }
+
+    //Collectors Utility methods used with stream
+    //joining
+    private static void joiningMethod(){
+        List<String> words = Arrays.asList("apple", "banana", "orange", "mango");
+
+        String word = words.stream().collect(Collectors.joining(",",">>","<<"));
+        System.out.println(word);
+    }
+
+    //groupingBy
+    //most basic explanation below:
+    //important one > so it outputs a key value pair, the key is the field you are classifying upon and value is the list of the objects that has that key
+    // ok if we want to get into complexity, we can have a range grouping by.
+    private static void groupingByMethod(){
+
+        List<Person> list = new ArrayList<>();
+        list.add(new Person("A", "Bangalore"));
+        list.add(new Person("B", "Chennai"));
+        list.add(new Person("C", "Bangalore"));
+
+        Map<String,List<Person>> cityGrouping = list.stream().collect(Collectors.groupingBy(Person::getCity));
+        System.out.println(cityGrouping);
+    }
+
+    private static void groupingByMethod2(){
+
+        List<Integer> list = List.of(1,2,3,4,5,6,7,8,9);
+
+        Map<String,List<Integer>> rangeGrouping = list.stream().collect(Collectors.groupingBy((a) -> {
+            if(a <= 3) return "<3";
+            else if (a <=5) return "3-5";
+            else return ">5";
+        }));
+        System.out.println(rangeGrouping);
     }
 }
